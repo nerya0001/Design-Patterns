@@ -98,13 +98,13 @@ void (*moveToNext)(void* data)
     state state = (state)d->getState();
     switch (state) {
         case state::siphered:
-            queue1.enQ(data);
+            object1.enQ(data);
             break;
         case state::decapitalized:
-            queue2.enQ(data);
+            object2.enQ(data);
             break;
         case state::end:
-            queue3.enQ(data);
+            object3.enQ(data);
             break;
         default:
             break;

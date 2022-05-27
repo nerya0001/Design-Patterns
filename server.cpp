@@ -27,10 +27,6 @@
 
 #define BACKLOG 10 // how many pending connections queue will hold
 
-activeObject object1;
-activeObject object2;
-activeObject object3;
-
 
 void sigchld_handler(int s) {
     int saved_errno = errno;
@@ -64,9 +60,15 @@ void *myThread(void *new_fd) {
             break;
         }
 
-        std::string text = clientMsg;
+        std::string text;
+        strcpy(text, clientMsg);
+        // create the data object to be passed to the active object
         data *d = new data(text, clientSock);
+        // push the data object into the queue
         object1.queue->enQ(d);
+
+        // zero out the clientMsg buffer
+        memset(clientMsg, 0, 1024); 
 
     }
     return NULL;
@@ -138,9 +140,14 @@ int main(void) {
     printf("server: waiting for connections...\n");
 
     pthread_t tid[3];
-    object1 = activeObject();
-    object2 = activeObject();
-    object3 = activeObject();
+    
+    /**
+     * @brief created three active objects and gave them the functions to run.
+     * 
+     */
+    object1 = activeObject(&caesarCipher, &moveToNext);
+    object2 = activeObject(&reverseCapitalization, &moveToNext);
+    object3 = activeObject(&sendResult, NULL);
 
     int i = 0;
     while (1) { // main accept() loop
