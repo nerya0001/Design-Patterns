@@ -3,27 +3,30 @@
 
 #include <iostream>
 #include <stdexcept>
-
+#include <pthread.h>
+template <typename T>
 class singleton
 {
 private:
-    static singleton *instance;
-    static pthread_mutex_t lock;
-    static pthread_mutex_t lock_init;
-    static pthread_cond_t cv;
-    static bool initialized;
-    singleton();
+    static T *instance;
+    static pthread_mutex_t mutex;
+
+    singleton() {}
+    ~singleton() {}
     singleton(const singleton &);
-    singleton &operator=(const singleton &);    
+    singleton &operator=(const singleton &);
+
 public:
-    static singleton *getInstance() {
-        if (!initialized) {
-            pthread_mutex_lock(&lock_init);
-            if (!initialized) {
-                instance = new singleton();
-                initialized = true;
+    static T *getInstance()
+    {
+        if (instance == NULL)
+        {
+            pthread_mutex_lock(&mutex);
+            if (instance == NULL)
+            {
+                instance = new T();
             }
-            pthread_mutex_unlock(&lock_init);
+            pthread_mutex_unlock(&mutex);
         }
         return instance;
     }
