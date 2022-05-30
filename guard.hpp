@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <pthread.h>
 
+
+
 class guard
 {
 private:
@@ -13,38 +15,16 @@ private:
     guard(const guard &);
     guard &operator=(const guard &);
 
-    void unlock()
-    {
-        pthread_mutex_unlock(&lock);
-    }
+    // void unlock();
 
-    void lock()
-    {
-        pthread_mutex_lock(&lock);
-    }
+    // void lock();
 
-    void check_lock()
-    {
-        if (pthread_mutex_trylock(&lock) != 0)
-        {
-            throw std::runtime_error("lock failed");
-        }
-    }
-
+    // void check_lock();
 
 public:
-    guard(pthread_mutex_t &lock) : lock(lock)
-    {
-        check_lock();
-    }
+    guard(pthread_mutex_t &lock);
 
-    ~guard()
-    {
-        unlock();
-    }
+    ~guard() noexcept;
 };
-
-
-   
 
 #endif

@@ -5,17 +5,20 @@
 #include <cstdlib>
 #include <pthread.h>
 
-class safeQueue {
+class safeQueue
+{
 private:
-    void *arr;
+    void **arr;
     int capacity;
     int front;
     int rear;
     int count;
     pthread_mutex_t lock;
     pthread_cond_t cv;
+
 public:
     safeQueue(int size);
+    safeQueue()=default;
     ~safeQueue();
     bool isFull();
     bool isEmpty();

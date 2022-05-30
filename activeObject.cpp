@@ -1,15 +1,13 @@
 #include "activeObject.hpp"
+typedef void *(*THREADFUNCPTR)(void *);
 
-activeObject(void *(*first)(void *data), void (*second)(void *data))
+activeObject::activeObject(void *(*first)(void *data), void *(*second)(void *data, void *object), int size) : func1(first), func2(second)
 {
-    queue = new safeQueue();
-    this->func1 = first;
-    this->func2 = second;
-
-    pthread_create(&thread, NULL, &activeObject::run, this->queue);
+    this->queue = new safeQueue(size);
+    pthread_create(&thread, NULL, (THREADFUNCPTR)&activeObject::run, &this->queue);
 }
 
-activeObject::~activeObject()
+activeObject::activeObject::~activeObject()
 {
     delete queue;
 }
@@ -17,10 +15,23 @@ activeObject::~activeObject()
 void *activeObject::run(void *queue)
 {
     safeQueue *q = (safeQueue *)queue;
-    while (1)
+    while (true)
     {
         data *d = (data *)q->deQ();
-        void *result = this->func1(d);
-        this->func2(result);
+        if (d != NULL)
+        {
+            void *result = this->func1(d);
+            // make sure func2 is not null
+            if (this->func2 != NULL)
+            {
+                this->func2(result, (void*)this);
+            }
+        }
     }
+    return NULL;
+}
+
+safeQueue *activeObject::getQueue()
+{
+    return this->queue;
 }

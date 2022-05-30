@@ -18,16 +18,16 @@ class data
 private:
     std::string text;
     int fd;
-    state state;
+    state s;
 public:
-    data(std::string text, int fd) : text(text), fd(fd), state(state::begin) {}
+    data(std::string text, int fd);
     ~data();
     std::string getText();
     void setText(std::string text);
     int getFd();
     void setFd(int fd);
-    state getState();
-    void setState(state state);
+    state &getState();
+    void setState(state s);
     
 };
    

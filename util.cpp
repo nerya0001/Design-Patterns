@@ -1,14 +1,14 @@
 #include "util.hpp"
 
-
-void* (*caesarCipher)(void* data)
+void *caesarCipher(void *newData)
 {
-    data* d = (data*)data;
+    data *d = (data *)newData;
     std::string text = (std::string)d->getText();
-    state state = (state)d->getState();
+    state s = (state)d->getState();
     std::string result = "";
-    if (state == state::begin) {
-        
+    if (s == state::begin)
+    {
+
         for (int i = 0; i < text.length(); i++)
         {
             if (text.at(i) == ' ')
@@ -31,22 +31,21 @@ void* (*caesarCipher)(void* data)
                 result += text.at(i);
             }
         }
-
     }
     d->setState(state::siphered);
     d->setText(result);
-    return d; 
+    return d;
 }
 
-
-void* (*reverseCapitalization)(void* data)
+void *reverseCapitalization(void *newData)
 {
-    data* d = (data*)data;
+    data *d = (data *)newData;
     std::string text = (std::string)d->getText();
-    state state = (state)d->getState();
+    state s = (state)d->getState();
     std::string result = "";
-    if (state == state::siphered) {
-        
+    if (s == state::siphered)
+    {
+
         for (int i = 0; i < text.length(); i++)
         {
             if (text.at(i) == ' ')
@@ -69,45 +68,45 @@ void* (*reverseCapitalization)(void* data)
                 result += text.at(i);
             }
         }
-
     }
     d->setState(state::decapitalized);
     d->setText(result);
     return d;
 }
 
-
-void* (*sendResult)(void* data)
+void *sendResult(void *newData)
 {
-    data* d = (data*)data;
+    data *d = (data *)newData;
     std::string text = (std::string)d->getText();
     int fd = d->getFd();
-    state state = (state)d->getState();
+    state s = (state)d->getState();
     int check;
-    if (state == state::decapitalized) {
+    if (s == state::decapitalized)
+    {
         check = send(fd, text.c_str(), text.length(), 0);
     }
     d->setState(state::end);
     return d;
 }
 
-
-void (*moveToNext)(void* data)
-{
-    data* d = (data*)data;
-    state state = (state)d->getState();
-    switch (state) {
-        case state::siphered:
-            object1.enQ(data);
-            break;
-        case state::decapitalized:
-            object2.enQ(data);
-            break;
-        case state::end:
-            object3.enQ(data);
-            break;
-        default:
-            break;
+void *moveToNext(void *newData, void* object)
+{   
+    activeObject *ob = (activeObject *)object;
+    data *d = (data *)newData;
+    state s = (state)d->getState();
+    switch (s)
+    {
+    case state::siphered:
+        ob->getQueue()->enQ(d);
+        break;
+    case state::decapitalized:
+        ob->getQueue()->enQ(d);
+        break;
+    case state::end:
+        ob->getQueue()->enQ(d);
+        break;
+    default:
+        break;
     }
-    
+    return NULL;
 }

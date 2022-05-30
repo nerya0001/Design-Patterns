@@ -27,6 +27,9 @@
 
 #define BACKLOG 10 // how many pending connections queue will hold
 
+activeObject object1;
+activeObject object2;
+activeObject object3;
 
 void sigchld_handler(int s) {
     int saved_errno = errno;
@@ -57,15 +60,17 @@ void *myThread(void *new_fd) {
         }
 
         if (numbytes == 0) {
+            //TODO: close connection
             break;
         }
 
         std::string text;
-        strcpy(text, clientMsg);
+        text = clientMsg;
+    
         // create the data object to be passed to the active object
         data *d = new data(text, clientSock);
         // push the data object into the queue
-        object1.queue->enQ(d);
+        object1.getQueue()->enQ(d);
 
         // zero out the clientMsg buffer
         memset(clientMsg, 0, 1024); 
@@ -84,7 +89,7 @@ int main(void) {
     char s[INET6_ADDRSTRLEN];
     int rv;
 
-    initQ(&qHead);
+    // initQ(&qHead);
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
@@ -139,15 +144,15 @@ int main(void) {
 
     printf("server: waiting for connections...\n");
 
-    pthread_t tid[3];
+    pthread_t tid[10];
     
     /**
      * @brief created three active objects and gave them the functions to run.
      * 
      */
-    object1 = activeObject(&caesarCipher, &moveToNext);
-    object2 = activeObject(&reverseCapitalization, &moveToNext);
-    object3 = activeObject(&sendResult, NULL);
+    object1 = activeObject(&caesarCipher, &moveToNext,20);
+    object2 = activeObject(&reverseCapitalization, &moveToNext,20);
+    object3 = activeObject(&sendResult, NULL,20);
 
     int i = 0;
     while (1) { // main accept() loop

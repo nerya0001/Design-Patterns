@@ -2,17 +2,19 @@ CC=g++
 AR=ar
 FLAGS=-Wall -g
 
-all: main1
+all: libdesign.so server
 
 
-main1: main1.o libdesign.so
-	$(CC) $(FLAGS) -o  main1 main1.o -lpthread -ltbb ./libdesign.so
+# main1: main1.o libdesign.so
+# 	$(CC) $(FLAGS) -o  main1 main1.o -lpthread -ltbb ./libdesign.so
+server: server.o libdesign.so activeObject.o util.o
+	$(CC) $(FLAGS) -o server server.o -lpthread ./libdesign.so activeObject.o util.o
 
-libdesign.so: guard.o singleton.o reactor.o
-	$(CC) -shared -o libdesign.so guard.o singleton.o reactor.o -fPIC
+libdesign.so: guard.o singleton.o reactor.o safeQueue.o data.o
+	$(CC) -shared -fPIC -o libdesign.so guard.o singleton.o reactor.o safeQueue.o data.o
 
-main1.o: main1.cpp main1.hpp
-	$(CC) $(FLAGS) -c main1.cpp
+# main1.o: main1.cpp main1.hpp
+# 	$(CC) $(FLAGS) -c main1.cpp
 
 guard.o: guard.cpp guard.hpp
 	$(CC) $(FLAGS) -c guard.cpp
@@ -23,8 +25,25 @@ singleton.o: singleton.cpp singleton.hpp
 reactor.o: reactor.cpp reactor.hpp
 	$(CC) $(FLAGS) -c reactor.cpp
 
+server.o: server.cpp activeObject.hpp
+	$(CC) $(FLAGS) -c server.cpp
+
+util.o: util.cpp util.hpp activeObject.hpp safeQueue.hpp
+	$(CC) $(FLAGS) -c util.cpp	
+
+data.o: data.cpp data.hpp
+	$(CC) $(FLAGS) -c data.cpp
+
+
+activeObject.o: activeObject.cpp activeObject.hpp safeQueue.hpp data.hpp util.hpp
+	$(CC) $(FLAGS) -c activeObject.cpp	
+
+
+
+
+
 
 .PHONY: clean all
 
 clean:
-	rm -f *.o *.a *.so main1
+	rm -f *.o *.a *.so server
