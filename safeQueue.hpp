@@ -4,11 +4,12 @@
 #include <iostream>
 #include <cstdlib>
 #include <pthread.h>
+#include <vector>
 
-class safeQueue
-{
+class safeQueue {
 private:
-    void **arr;
+    std::vector<void *> arr;
+//    void **arr;
     int capacity;
     int front;
     int rear;
@@ -18,11 +19,17 @@ private:
 
 public:
     safeQueue(int size);
-    safeQueue()=default;
+
+    safeQueue() = default;
+
     ~safeQueue();
+
     bool isFull();
+
     bool isEmpty();
+
     void *deQ();
+
     void enQ(void *item);
 };
 

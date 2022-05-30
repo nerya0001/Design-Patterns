@@ -5,8 +5,9 @@
 using namespace std;
 
 
-safeQueue::safeQueue(int size) {
-    arr = new void*[size];
+safeQueue::safeQueue(int size) : arr(size,
+                                     nullptr){
+//    arr = new void*[size];
     capacity = size;
     front = 0;
     rear = 0;
@@ -17,7 +18,7 @@ safeQueue::safeQueue(int size) {
 
 
 safeQueue::~safeQueue() {
-    delete[] arr;
+//    delete[] arr;
     pthread_mutex_destroy(&lock);
     pthread_cond_destroy(&cv);
 }

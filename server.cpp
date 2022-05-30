@@ -150,13 +150,15 @@ int main(void) {
      * @brief created three active objects and gave them the functions to run.
      * 
      */
-    object1 = activeObject(&caesarCipher, &moveToNext,20);
-    object2 = activeObject(&reverseCapitalization, &moveToNext,20);
-    object3 = activeObject(&sendResult, NULL,20);
+    object1 =activeObject(&caesarCipher, &moveToNext,20);
+    std::cout<<"lala\n";
+    object2 =activeObject(&reverseCapitalization, &moveToNext,20);
+    object3 =activeObject(&sendResult, NULL,20);
 
     int i = 0;
     while (1) { // main accept() loop
         sin_size = sizeof their_addr;
+        std::cout<<"ani lo magie lepo\n";
         new_fd = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
         if (new_fd == -1) {
             perror("accept");
