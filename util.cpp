@@ -9,7 +9,7 @@ void *caesarCipher(void *newData)
     if (s == state::begin)
     {
 
-        for (int i = 0; i < text.length(); i++)
+        for (uint i = 0; i < text.length(); i++)
         {
             if (text.at(i) == ' ')
             {
@@ -46,7 +46,7 @@ void *reverseCapitalization(void *newData)
     if (s == state::siphered)
     {
 
-        for (int i = 0; i < text.length(); i++)
+        for (uint i = 0; i < text.length(); i++)
         {
             if (text.at(i) == ' ')
             {
@@ -80,10 +80,10 @@ void *sendResult(void *newData)
     std::string text = (std::string)d->getText();
     int fd = d->getFd();
     state s = (state)d->getState();
-    int check;
+    // int check;
     if (s == state::decapitalized)
     {
-        check = send(fd, text.c_str(), text.length(), 0);
+        send(fd, text.c_str(), text.length(), 0);
     }
     d->setState(state::end);
     return d;
