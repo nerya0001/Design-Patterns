@@ -21,6 +21,7 @@ private:
     state s;
 public:
     data(std::string text, int fd);
+    data()=default;
     ~data();
     std::string getText();
     void setText(std::string text);

@@ -1,5 +1,14 @@
 #include "util.hpp"
 
+
+
+void *printData(void* newData) {
+    data *d = (data *)newData;
+    std::cout << "printData: " << d->getText() << std::endl;
+    return NULL;
+
+}
+
 void *caesarCipher(void *newData)
 {
     data *d = (data *)newData;
@@ -80,7 +89,7 @@ void *sendResult(void *newData)
     std::string text = (std::string)d->getText();
     int fd = d->getFd();
     state s = (state)d->getState();
-    // int check;
+
     if (s == state::decapitalized)
     {
         send(fd, text.c_str(), text.length(), 0);
@@ -89,21 +98,18 @@ void *sendResult(void *newData)
     return d;
 }
 
-void *moveToNext(void *newData, void* object)
+void *moveToNext(void *newData)
 {   
-    activeObject *ob = (activeObject *)object;
+    // activeObject *ob = (activeObject *)object;
     data *d = (data *)newData;
     state s = (state)d->getState();
     switch (s)
     {
     case state::siphered:
-        ob->getQueue()->enQ(d);
+        object2->getQueue()->enQ(d);
         break;
     case state::decapitalized:
-        ob->getQueue()->enQ(d);
-        break;
-    case state::end:
-        ob->getQueue()->enQ(d);
+        object3->getQueue()->enQ(d);
         break;
     default:
         break;

@@ -17,12 +17,12 @@ private:
 //    void *(*func2)(void *data,void* object);
 
 public:
-    activeObject(void *(*first)(void *data), void *(*second)(void *data,void* object), int size);
+    activeObject(void *(*first)(void *data), void *(*second)(void *data), int size);
     activeObject() = default;
     ~activeObject();
     safeQueue* getQueue();
     void *(*func1)(void *data);
-    void *(*func2)(void *data,void* object);
+    void *(*func2)(void *data);
     static void *run(void* activeObj);
 };
 

@@ -13,8 +13,12 @@ server: server.o libdesign.so activeObject.o util.o
 libdesign.so: guard.o singleton.o reactor.o safeQueue.o data.o
 	$(CC) -shared -fPIC -o libdesign.so guard.o singleton.o reactor.o safeQueue.o data.o
 
-# main1.o: main1.cpp main1.hpp
-# 	$(CC) $(FLAGS) -c main1.cpp
+# main: main.o activeObject.o libdesign.so util.o
+# 	$(CC) $(FLAGS) -o main main.o activeObject.o util.o ./libdesign.so -lpthread
+
+
+# main.o: main.cpp activeObject.hpp 
+# 	$(CC) $(FLAGS) -c main.cpp 
 
 guard.o: guard.cpp guard.hpp
 	$(CC) $(FLAGS) -c guard.cpp
@@ -39,8 +43,8 @@ activeObject.o: activeObject.cpp activeObject.hpp safeQueue.hpp data.hpp util.hp
 	$(CC) $(FLAGS) -c activeObject.cpp	
 
 
-
-
+safeQueue.o: safeQueue.cpp safeQueue.hpp
+	$(CC) $(FLAGS) -c safeQueue.cpp
 
 
 .PHONY: clean all

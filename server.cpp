@@ -27,9 +27,9 @@
 
 #define BACKLOG 10 // how many pending connections queue will hold
 
-activeObject object1;
-activeObject object2;
-activeObject object3;
+activeObject *object1;
+activeObject *object2;
+activeObject *object3;
 
 void sigchld_handler(int s) {
     int saved_errno = errno;
@@ -70,7 +70,7 @@ void *myThread(void *new_fd) {
         // create the data object to be passed to the active object
         data *d = new data(text, clientSock);
         // push the data object into the queue
-        object1.getQueue()->enQ(d);
+        object1->getQueue()->enQ(d);
 
         // zero out the clientMsg buffer
         memset(clientMsg, 0, 1024); 
@@ -150,15 +150,15 @@ int main(void) {
      * @brief created three active objects and gave them the functions to run.
      * 
      */
-    object1 =activeObject(&caesarCipher, &moveToNext,20);
-    std::cout<<"lala\n";
-    object2 =activeObject(&reverseCapitalization, &moveToNext,20);
-    object3 =activeObject(&sendResult, NULL,20);
+    
+    object1 = new activeObject(&caesarCipher, &moveToNext,20);
+    object2 = new activeObject(&reverseCapitalization, &moveToNext,20);
+    object3 = new activeObject(&sendResult, NULL,20);
 
     int i = 0;
     while (1) { // main accept() loop
         sin_size = sizeof their_addr;
-        std::cout<<"ani lo magie lepo\n";
+     
         new_fd = accept(sockfd, (struct sockaddr *) &their_addr, &sin_size);
         if (new_fd == -1) {
             perror("accept");
