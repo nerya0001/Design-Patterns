@@ -2,23 +2,24 @@ CC=g++
 AR=ar
 FLAGS=-Wall -g
 
-all: libdesign.so server
+all: libdesign.so server test pollServer
 
+pollServer: pollServer.o reactor.o
+	$(CC) $(FLAGS) -o pollServer pollServer.o reactor.o -lpthread
 
-# main1: main1.o libdesign.so
-# 	$(CC) $(FLAGS) -o  main1 main1.o -lpthread -ltbb ./libdesign.so
 server: server.o libdesign.so activeObject.o util.o
 	$(CC) $(FLAGS) -o server server.o -lpthread ./libdesign.so activeObject.o util.o
 
-libdesign.so: guard.o singleton.o reactor.o safeQueue.o data.o
-	$(CC) -shared -fPIC -o libdesign.so guard.o singleton.o reactor.o safeQueue.o data.o
 
-# main: main.o activeObject.o libdesign.so util.o
-# 	$(CC) $(FLAGS) -o main main.o activeObject.o util.o ./libdesign.so -lpthread
+libdesign.so: guard.o singleton.o safeQueue.o data.o
+	$(CC) -shared -fPIC -o libdesign.so guard.o singleton.o safeQueue.o data.o
+
+test: test.o activeObject.o libdesign.so util.o
+	$(CC) $(FLAGS) -o test test.o activeObject.o util.o ./libdesign.so -lpthread
 
 
-# main.o: main.cpp activeObject.hpp 
-# 	$(CC) $(FLAGS) -c main.cpp 
+test.o: test.cpp activeObject.hpp 
+	$(CC) $(FLAGS) -c test.cpp 
 
 guard.o: guard.cpp guard.hpp
 	$(CC) $(FLAGS) -c guard.cpp
@@ -31,6 +32,9 @@ reactor.o: reactor.cpp reactor.hpp
 
 server.o: server.cpp activeObject.hpp
 	$(CC) $(FLAGS) -c server.cpp
+
+pollServer.o: pollServer.cpp reactor.hpp
+	$(CC) $(FLAGS) -c pollServer.cpp
 
 util.o: util.cpp util.hpp activeObject.hpp safeQueue.hpp
 	$(CC) $(FLAGS) -c util.cpp	
@@ -47,7 +51,8 @@ safeQueue.o: safeQueue.cpp safeQueue.hpp
 	$(CC) $(FLAGS) -c safeQueue.cpp
 
 
+
 .PHONY: clean all
 
 clean:
-	rm -f *.o *.a *.so server
+	rm -f *.o *.a *.so server test

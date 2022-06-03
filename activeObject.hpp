@@ -24,6 +24,8 @@ public:
     void *(*func1)(void *data);
     void *(*func2)(void *data);
     static void *run(void* activeObj);
+    //getter for thread
+    pthread_t &getThread(){return this->thread;}
 };
 
 #endif

@@ -27,19 +27,7 @@ void *activeObject::run(void *activeObj) {
     }
     return NULL;
 }
-//void *activeObject::run(void* activeObj) {
-//    while (true) {
-//        data *d = (data *) this->queue->deQ();
-//        if (d != NULL) {
-//            void *result = this->func1(d);
-//            // make sure func2 is not null
-//            if (this->func2 != NULL) {
-//                this->func2(result, (void *) this);
-//            }
-//        }
-//    }
-//    return NULL;
-//}
+
 
 safeQueue *activeObject::getQueue() {
     return (this->queue);

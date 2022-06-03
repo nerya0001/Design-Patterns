@@ -9,7 +9,7 @@ safeQueue::safeQueue(int size) : arr(size,
                                      nullptr){
 //    arr = new void*[size];
     capacity = size;
-    front = 0;
+    front =0; 
     rear = 0;
     count = 0;
     pthread_mutex_init(&lock, NULL);
