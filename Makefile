@@ -4,8 +4,8 @@ FLAGS=-Wall -g
 
 all: libdesign.so server test pollServer
 
-pollServer: pollServer.o reactor.o
-	$(CC) $(FLAGS) -o pollServer pollServer.o reactor.o -lpthread
+pollServer: pollServer.o reactor.o pollClient.o
+	$(CC) $(FLAGS) -o pollServer pollServer.o reactor.o pollClient.o -lpthread
 
 server: server.o libdesign.so activeObject.o util.o
 	$(CC) $(FLAGS) -o server server.o -lpthread ./libdesign.so activeObject.o util.o
@@ -36,6 +36,10 @@ server.o: server.cpp activeObject.hpp
 pollServer.o: pollServer.cpp reactor.hpp
 	$(CC) $(FLAGS) -c pollServer.cpp
 
+
+pollClient.o: pollClient.cpp
+	$(CC) $(FLAGS) -c pollClient.cpp
+
 util.o: util.cpp util.hpp activeObject.hpp safeQueue.hpp
 	$(CC) $(FLAGS) -c util.cpp	
 
@@ -55,4 +59,4 @@ safeQueue.o: safeQueue.cpp safeQueue.hpp
 .PHONY: clean all
 
 clean:
-	rm -f *.o *.a *.so server test
+	rm -f *.o *.a *.so server test pollServer
