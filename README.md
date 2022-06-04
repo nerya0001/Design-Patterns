@@ -1,5 +1,5 @@
 # Design Pattern
-> Made by [Nerya Bigon]() and [Ori Howard]()  
+> Made by [Nerya Bigon](https://github.com/nerya0001) and [Ori Howard](https://github.com/OriHoward)
 
 In this assignment we've implemented a thread-safe queue with cond, active object, active objects pipe-line, guard (scope mutex), singleton and a reactor.  
 - We've used code from the beej networking guide https://beej.us/guide/bgnet/html/#poll  
