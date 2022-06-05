@@ -68,4 +68,4 @@ safeQueue.o: safeQueue.cpp safeQueue.hpp
 .PHONY: clean all
 
 clean:
-	rm -f *.o *.a *.so server test pollServer pollClient
+	rm -f *.o *.a *.so server test pollServer pollClient testSingleton
