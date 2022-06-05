@@ -18,11 +18,6 @@ since we've implemented the assignment in CPP there are a couplle of logical ass
 
 ```
 make all
-```  
-
-to run the `main1` that simulate the design patterns run the following command:
-```
-./main1
 ```
 
 #### Active Object
@@ -36,7 +31,7 @@ to simulate the active object you'll first need to run the server, and then send
 4. To run the telnet client - the command is:  
 
 ```
-telnet remotehostname 3490
+telnet 127.0.0.1 9035
 ```  
 
 #### Reactor
@@ -56,19 +51,12 @@ in order to simulate the reactor you'll need to run the poll Server and connect 
 * For example:  
 ```
 ./pollClient 127.0.0.1
-```    
-
-#### Guard
-
-to run the main simulating the guard run the following command:
-```
-./guardMain
 ```
 
 #### Singleton
 to run the main simulating the singleton run the following command:
 ```
-./singletonMain
+./testSingleton
 ```
 
 #### Tests
