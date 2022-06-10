@@ -1,4 +1,4 @@
-# Design Pattern
+# Design Patterns
 > Made by [Nerya Bigon](https://github.com/nerya0001) and [Ori Howard](https://github.com/OriHoward)
 
 In this assignment we've implemented a thread-safe queue with cond, active object, active objects pipe-line, guard (scope mutex), singleton and a reactor.  
